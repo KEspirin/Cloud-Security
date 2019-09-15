@@ -27,7 +27,7 @@
 
         <tr>
             <td>File contents:</td>
-            <td><textarea id="fileContent" cols="60" rows="10" readonly></textarea></td>
+            <td><textarea id="fileContent" cols="60" rows="10"></textarea></td>
         </tr>
 
         <tr>
@@ -45,7 +45,7 @@
         </tr>
         <tr>
             <td>Encrypted file:</td>
-            <td><textarea id="encryptedFile" cols="60" rows="10" readonly></textarea></td>
+            <td><textarea id="encryptedFile" cols="60" rows="10"></textarea><input type="hidden" id="encryptedFileInfo"></input></td>
         </tr>
 
         <tr>
@@ -69,129 +69,168 @@
             </td>
         </tr>
 
+    </table>
+    
 
 
-        </form>
+    <script>
+        function handleFileSelect(evt) {
+            var files = evt.target.files; // FileList object
+            var output = document.getElementById("fileContent");
 
-        <script>
-            function handleFileSelect(evt) {
-                var files = evt.target.files; // FileList object
-                var output = document.getElementById("fileContent");
+            // files is a FileList of File objects. List some properties.
+            var output = [];
+            f = files[0]
 
-                // files is a FileList of File objects. List some properties.
-                var output = [];
-                f = files[0]
+            output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+                f.size, ' bytes, last modified: ',
+                f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
+                '</li>');
 
-                output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
-                    f.size, ' bytes, last modified: ',
-                    f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
-                    '</li>');
+            document.getElementById('fileInfo').innerHTML = '<ul>' + output.join('') + '</ul>';
 
-                document.getElementById('fileInfo').innerHTML = '<ul>' + output.join('') + '</ul>';
+            var reader = new FileReader();
+            reader.addEventListener("load", function (event) {
 
-                var reader = new FileReader();
-                reader.addEventListener("load", function (event) {
+                var textFile = event.target;
+                document.getElementById("fileContent").value = textFile.result;
 
-                    var textFile = event.target;
-                    document.getElementById("fileContent").value = textFile.result;
+            });
 
-                });
-
-                reader.readAsText(f);
+            reader.readAsText(f);
 
 
-            }
+        }
 
-            document.getElementById('files').addEventListener('change', handleFileSelect, false);
-
-
-            function checkKey() {
-                var input = document.getElementById("key").value;
-                var split = input.split(" ");
-                var key = split.join("");
-                return Boolean(key.match(/^[0-9a-f]+$/i));
-
-                if (isHex == false || key.length != 32 || input == "") {
-                    return false;
-                } else {
-                    return true;
-                }
+        document.getElementById('files').addEventListener('change', handleFileSelect, false);
 
 
+        function checkKey() {
+            var input = document.getElementById("key").value;
+            var split = input.split(" ");
+            var key = split.join("");
+            return Boolean(key.match(/^[0-9a-f]+$/i));
+
+            if (isHex == false || key.length != 32 || input == "") {
+                return false;
+            } else {
+                return true;
             }
 
 
-
-            function encrypt() {
-                if (checkKey() == false) {
-                    document.getElementById("key").value = "invalid key";
-                    return;
-                }
-                var plaintext = document.getElementById("fileContent").value;
-                var key = document.getElementById("key").value;
-
-                var message = document.getElementById("message").value;
-                var out = (new sjcl.misc.hmac(sjcl.codec.utf8String.toBits(key), sjcl.hash.sha256)).mac(message);
-                var hmac = sjcl.codec.base64.fromBits(out);
+        }
 
 
-                var p = {
-                    //adata: message,
-                    iter: "1000",
-                    //mode: "ccm",
-                    //ts: 64,
-                    ks: 128
-                };
-                var rp = {};
-                var ciphertext = sjcl.encrypt(key, plaintext, p, rp);
+
+        function encrypt() {
+            if (checkKey() == false) {
+                document.getElementById("key").value = "invalid key";
+                return;
+            }
+            var plaintext = document.getElementById("fileContent").value;
+            var key = document.getElementById("key").value;
+            var iv = "00000000 00000000 00000000 00000000";
 
 
-                document.getElementById("encryptedFile").value = ciphertext.match(/"ct":"([^"]*)"/)[1];;
-                document.getElementById("hmac").value = hmac;
+            var message = document.getElementById("message").value;
+            var out = (new sjcl.misc.hmac(sjcl.codec.utf8String.toBits(key), sjcl.hash.sha256)).mac(message);
+            var hmac = sjcl.codec.base64.fromBits(out);
 
+            var p = {
+                adata: message,
+                iter: "1000",
+                mode: "ccm",
+                ts: 64,
+                ks: 128,
+                iv: iv.split(" ")
+            };
+            var rp = {};
+            var ciphertext = sjcl.encrypt(key, plaintext, p, rp);
+
+            document.getElementById("encryptedFile").value = ciphertext.match(/"ct":"([^"]*)"/)[1];
+            document.getElementById("encryptedFileInfo").value = ciphertext;
+            document.getElementById("hmac").value = hmac;
+
+        }
+
+
+        function decrypt() {
+
+            if (checkKey() == false) {
+                document.getElementById("key").value = "invalid key";
+                return;
             }
 
+            var key = document.getElementById("key").value;
+            var ciphertext = document.getElementById("encryptedFileInfo").value;
+            var plaintext = sjcl.decrypt(key, ciphertext, {}, {});
 
-            function decrypt() {
+
+                //plaintext = sjcl.codec.utf8String.fromBits(sjcl.mode.ccm.decrypt(aes, ciphertext, iv.split(" "), adata, "64"));
+            // aes = new sjcl.cipher.aes(key);
+
+            // // var message = document.getElementById("message").value;
+            // // var out = (new sjcl.misc.hmac(sjcl.codec.utf8String.toBits(key), sjcl.hash.sha256)).mac(message);
+            // // var hmac = sjcl.codec.base64.fromBits(out);
 
 
+            // // var p = {
+            // //     //adata: message,
+            // //     iter: "1000",
+            // //     //mode: "ccm",
+            // //     //ts: 64,
+            // //     ks: 128
+            // // };
 
+
+            // var rp = {};
+            // var iv = "00000000 00000000 00000000 00000000";
+            // var adata = document.getElementById("message").value;
+            // var
+            //     //plaintext = sjcl.decrypt(aes, ciphertext, {}, rp);
+            //     plaintext = sjcl.codec.utf8String.fromBits(sjcl.mode.ccm.decrypt(aes, ciphertext, iv.split(" "), adata, "64"));
+
+            document.getElementById("fileContent").value = plaintext;
+            // // document.getElementById("hmac").value = hmac;
+
+
+        }
+
+        function savetofile() {
+
+            var text = document.getElementById("encryptedFile").value;
+            var filename = document.getElementById("savename").value
+
+            save(text, filename);
+
+        }
+
+        function saveinfotofile() {
+
+            var text = document.getElementById("encryptedFile").value;
+            var hmac = document.getElementById("hmac").value;
+            var filename = document.getElementById("savename2").value
+
+            text += hmac;
+
+
+            save(text, filename);
+
+
+        }
+
+
+        function save(text, filename) {
+            var blob = new Blob([text], { type: "text/plain;charset=utf-8" })
+
+            if (filename.substr(filename.length - 4).toLowerCase() != ".txt") {
+                filename += ".txt";
             }
 
-            function savetofile() {
+            saveAs(blob, filename);
+        }
 
-                var text = document.getElementById("encryptedFile").value;
-                var filename = document.getElementById("savename").value
-
-                save(text, filename);
-
-            }
-
-            function saveinfotofile() {
-                var text = document.getElementById("encryptedFile").value;
-                var hmac = document.getElementById("hmac").value;
-                var filename = document.getElementById("savename2").value
-
-                text += hmac;
-
-
-                save(text, filename);
-
-
-            }
-
-
-            function save(text, filename) {
-                var blob = new Blob([text], { type: "text/plain;charset=utf-8" })
-
-                if (filename.substr(filename.length - 4).toLowerCase() != ".txt") {
-                    filename += ".txt";
-                }
-
-                saveAs(blob, filename);
-            }
-
-        </script>
+    </script>
 
 
 
