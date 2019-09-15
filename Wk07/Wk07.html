@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="library/sjcl.js" type="text/javascript"></script>
+    <script src="library/FileSaver.min.js" type="text/javascript"></script>
+</head>
+
+<body>
+
+
+
+    <h3>AES Encryption - Decryption</h3>
+
+    <table cellspacing="30">
+        <tr>
+            <td>32 hexadecimal dgits key (128 bits):</td>
+            <td><textarea id="key" cols="60" rows="2"></textarea></td>
+            <td><button onclick="checkKey()">
+                    check</button></td>
+        </tr>
+
+        <tr>
+            <td>Choose a file:</td>
+            <td><input type="file" id="files" name="files[]"><output id="fileInfo"></output></td>
+        </tr>
+
+        <tr>
+            <td>File contents:</td>
+            <td><textarea id="fileContent" cols="60" rows="10" readonly></textarea></td>
+        </tr>
+
+        <tr>
+            <td>Message for authentication:</td>
+            <td><textarea id="message" cols="60" rows="3"></textarea></td>
+        </tr>
+        <tr>
+            <td id="e"></td>
+            <td><button onclick="encrypt()">
+                    Encrypt ↓</button>
+                <span></span>
+                <button onclick="decrypt()">
+                    Decrypt ↑</button></td>
+
+        </tr>
+        <tr>
+            <td>Encrypted file:</td>
+            <td><textarea id="encryptedFile" cols="60" rows="10" readonly></textarea></td>
+        </tr>
+
+        <tr>
+            <td>HMAC:</td>
+            <td><textarea id="hmac" cols="60" rows="2" readonly></textarea></td>
+
+        </tr>
+        <tr>
+            <td>Save file:</td>
+            <td><input type="text" id="savename">
+                <button onclick="savetofile()">
+                    Save to file</button>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Save file with encrypted info:</td>
+            <td><input type="text" id="savename2">
+                <button onclick="saveinfotofile()">
+                    Save to file</button>
+            </td>
+        </tr>
+
+
+
+        </form>
+
+        <script>
+            function handleFileSelect(evt) {
+                var files = evt.target.files; // FileList object
+                var output = document.getElementById("fileContent");
+
+                // files is a FileList of File objects. List some properties.
+                var output = [];
+                f = files[0]
+
+                output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+                    f.size, ' bytes, last modified: ',
+                    f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
+                    '</li>');
+
+                document.getElementById('fileInfo').innerHTML = '<ul>' + output.join('') + '</ul>';
+
+                var reader = new FileReader();
+                reader.addEventListener("load", function (event) {
+
+                    var textFile = event.target;
+                    document.getElementById("fileContent").value = textFile.result;
+
+                });
+
+                reader.readAsText(f);
+
+
+            }
+
+            document.getElementById('files').addEventListener('change', handleFileSelect, false);
+
+
+            function checkKey() {
+                var input = document.getElementById("key").value;
+                var split = input.split(" ");
+                var key = split.join("");
+                return Boolean(key.match(/^[0-9a-f]+$/i));
+
+                if (isHex == false || key.length != 32 || input == "") {
+                    return false;
+                } else {
+                    return true;
+                }
+
+
+            }
+
+
+
+            function encrypt() {
+                if (checkKey() == false) {
+                    document.getElementById("key").value = "invalid key";
+                    return;
+                }
+                var plaintext = document.getElementById("fileContent").value;
+                var key = document.getElementById("key").value;
+
+                var message = document.getElementById("message").value;
+                var out = (new sjcl.misc.hmac(sjcl.codec.utf8String.toBits(key), sjcl.hash.sha256)).mac(message);
+                var hmac = sjcl.codec.base64.fromBits(out);
+
+
+                var p = {
+                    //adata: message,
+                    iter: "1000",
+                    //mode: "ccm",
+                    //ts: 64,
+                    ks: 128
+                };
+                var rp = {};
+                var ciphertext = sjcl.encrypt(key, plaintext, p, rp);
+
+
+                document.getElementById("encryptedFile").value = ciphertext.match(/"ct":"([^"]*)"/)[1];;
+                document.getElementById("hmac").value = hmac;
+
+            }
+
+
+            function decrypt() {
+
+
+
+            }
+
+            function savetofile() {
+
+                var text = document.getElementById("encryptedFile").value;
+                var filename = document.getElementById("savename").value
+
+                save(text, filename);
+
+            }
+
+            function saveinfotofile() {
+                var text = document.getElementById("encryptedFile").value;
+                var hmac = document.getElementById("hmac").value;
+                var filename = document.getElementById("savename2").value
+
+                text += hmac;
+
+
+                save(text, filename);
+
+
+            }
+
+
+            function save(text, filename) {
+                var blob = new Blob([text], { type: "text/plain;charset=utf-8" })
+
+                if (filename.substr(filename.length - 4).toLowerCase() != ".txt") {
+                    filename += ".txt";
+                }
+
+                saveAs(blob, filename);
+            }
+
+        </script>
+
+
+
+</body>
+
+</html>
