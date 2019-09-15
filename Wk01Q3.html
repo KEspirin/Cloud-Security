@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<center><h3>Convert to ASCII code</h3>
+
+Input String: <input type="var" id="input" >
+<p ></p>
+
+
+<button type="var"
+onclick="convert()">
+Convert</button>
+<p ></p>
+
+
+<textarea type="var" id="output" value=""></textarea>
+
+
+</center>
+
+<script>
+
+
+function convert(){
+	var x = document.getElementById("input").value;
+	var i;
+    
+    for (i = 0; i< x.length;i++){
+    
+    document.getElementById("output").innerHTML += x.charCodeAt(i)+" ";
+    
+    }
+
+}
+
+</script>
+
+
+
+</body>
+</html> 

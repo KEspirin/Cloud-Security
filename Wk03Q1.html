@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+    <h3>4-bit nibble substitution</h3>
+
+
+
+    4-bit nibble: <input type="var" id="input">
+
+
+    <button type="var" onclick="substitute()">
+        Substitute</button>
+    <p></p>
+
+
+    Output nibble: <input type="var" id="output">
+    <p></p>
+
+
+
+
+    <script>
+
+        function substitute() {
+            var sbox = ["1001", "0100", "1010", "1011", "1101", "0001", "1000", "0101", "0110", "0010", "0000", "0011", "1100", "1110", "1111", "0111"];
+            var x = document.getElementById("input").value;
+
+            if (!isNaN(x) && /^[01]+$/.test(x) != 0) {
+                var y = parseInt(x, 2).toString(10);
+                document.getElementById("output").innerHTML = sbox[y];
+            } else {
+                document.getElementById("output").innerHTML = "invalid input";
+            }
+
+        }
+
+    </script>
+
+
+
+</body>
+
+</html>

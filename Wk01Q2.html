@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h3>multiplication and division</h3>
+
+1st Number: <input type="var" id="fst" >
+<p ></p>
+
+
+2nd Number: <input type="var" id="scd" >
+<p ></p>
+
+
+<button type="var"
+onclick="multiply()">
+multiply</button>
+
+<input type="var" id="mtp" >
+<p ></p>
+
+
+
+<button type="var"
+onclick="devide()">
+devide</button>
+
+<input type="var" id="dvd" >
+<p ></p>
+
+<p id="demo"></p>
+<p id="cn"></p>
+
+
+<script>
+function multiply() {
+	var x = document.getElementById("fst").value;
+    var y = document.getElementById("scd").value;
+	
+    document.getElementById("mtp").value = x*y;
+
+}
+
+function devide(){
+	var x = document.getElementById("fst").value;
+    var y = document.getElementById("scd").value;
+	
+    document.getElementById("dvd").value= x/y;
+
+
+}
+
+</script>
+
+
+
+</body>
+</html> 

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+
+
+    <h3>Unpadded RSA Signing - Verifying</h3>
+
+    <table cellspacing="30">
+        <tr>
+            <td>Prime p:</td>
+            <td><input type="var" id="p" onchange="input()"></td>
+
+        </tr>
+
+        <tr>
+            <td>Prime q:</td>
+            <td><input type="var" id="q" onchange="input()"></td>
+        </tr>
+
+        <tr>
+            <td>n = p*q:</td>
+            <td id="n" value=""></td>
+        </tr>
+
+        <tr>
+            <td>Φ(n) = (p-1)*(q-1):</td>
+            <td id="fin" value=""></td>
+        </tr>
+        <tr>
+            <td>e:</td>
+            <td id="e"></td>
+            <td><button onclick="gene()">
+                    Generate e</button></td>
+
+        </tr>
+        <tr>
+            <td>d:</td>
+            <td id="d"></td>
+            <td><button onclick="gend()">
+                    Generate d</button></td>
+        </tr>
+
+        <tr>
+            <td>Message:</td>
+            <td><input type="var" id="m"></td>
+            <td><button onclick="signing()">
+                    Signing</button></td>
+        </tr>
+        <tr>
+            <td>Signature:</td>
+            <td><input type="var" id="s"></td>
+            <td><button onclick="veryfying()">
+                    Verifying</button></td>
+            <td><button onclick="clear()">
+                    Clear Message</button></td>
+        </tr>
+        <p id="test"></p>
+
+    </table>
+
+    <script>
+
+        function input() {
+            var p = document.getElementById("p").value;
+            var q = document.getElementById("q").value;
+            if (p && q) {
+                document.getElementById("n").innerHTML = p * q;
+                document.getElementById("n").value = p * q;
+                document.getElementById("fin").innerHTML = (p - 1) * (q - 1);
+                document.getElementById("fin").value = (p - 1) * (q - 1);
+            }
+        }
+
+        function gene() {
+            var fin = document.getElementById("fin").value;
+            var e = [];
+
+            for (i = 0; i < fin; i++) {
+                if (euclidean(i, fin) == 1) {
+                    e.push(i);
+                }
+            }
+            document.getElementById("e").value = e[Math.floor((Math.random() * e.length))];
+            document.getElementById("e").innerHTML = document.getElementById("e").value;
+            // document.getElementById("test").innerHTML = document.getElementById("e").value;
+        }
+
+
+        function euclidean(a, b) {
+
+            if (!isNaN(a) && !isNaN(b) && a > 0 && b > 0) {
+
+                var temp = 1;
+                while (temp != 0) {
+                    temp = a % b;
+                    a = b;
+                    b = temp;
+                }
+                return a
+
+            } else {
+                document.getElementById("e").innerHTML = "invalid input";
+            }
+
+        }
+
+        function gend() {
+            var fin = document.getElementById("fin").value;
+            var e = document.getElementById("e").value;
+            for (d = 0; d < fin; d++) {
+                var temp = d * e - 1;
+                // d*e - x*fin = 1
+                if (temp % fin == 0) {
+                    document.getElementById("d").innerHTML = d;
+                    document.getElementById("d").value = d;
+                    return d;
+                }
+            }
+        }
+
+        function signing() {
+            var m = document.getElementById("m").value;
+            var n = document.getElementById("n").value;
+            var d = document.getElementById("d").value.toString(2);
+            // document.getElementById("test").innerHTML = d;
+            var s = fastexp(m,n,d);
+            // var s = 1;
+            // var temp = m % n;
+
+            // for (i = d.length - 1; i >= 0; i--) {
+                
+            //     if (d.charAt(i) != 0) {
+            //         s = s * temp % n;
+            //     }
+            //     temp = temp*temp % n;
+
+            // }
+            document.getElementById("s").value = s;
+        }
+
+        function veryfying() {
+            var s = document.getElementById("s").value;
+            var n = document.getElementById("n").value;
+            var e = document.getElementById("e").value.toString(2);
+            var m = fastexp(s,n,e);
+
+            document.getElementById("m").value = m;
+
+        }
+
+        function fastexp(b,m,e){
+            var s = 1;
+            var temp = b % m;
+
+            for (i = e.length - 1; i >= 0; i--) {
+                
+                if (e.charAt(i) != 0) {
+                    s = s * temp % m;
+                }
+                temp = temp*temp % m;
+
+            }
+            return s;
+        }
+
+        function clear() {
+            document.getElementById("m").value = "";
+        }
+
+
+    </script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<center><h3>Decimal - Binary</h3>
+
+
+
+Decimal Number: <input type="var" id="Dinput" >
+<p ></p>
+
+
+<button type="var"
+onclick="ctb()">
+Convert to Binary</button>
+<p ></p>
+
+
+<textarea type="var" id="Boutput" value=""></textarea>
+<p ></p>
+
+
+
+Binary Number: <input type="var" id="Binput" >
+<p ></p>
+
+
+<button type="var"
+onclick="btc()">
+Convert to Decimal</button>
+<p ></p>
+
+
+<textarea type="var" id="Doutput" value=""></textarea>
+
+</center>
+
+<script>
+
+
+function ctb(){
+	var x = document.getElementById("Dinput").value;
+    if(!isNaN(x)){
+	var y = parseInt(x, 10).toString(2);
+    document.getElementById("Boutput").innerHTML = y;
+    }else{
+    document.getElementById("Boutput").innerHTML = "invalid input"
+    }
+    }
+    
+
+function btc(){
+	var x = document.getElementById("Binput").value;
+    if(!isNaN(x)){
+	var y = parseInt(x, 2).toString(10);
+    document.getElementById("Doutput").innerHTML = y;
+    }else{
+    document.getElementById("Doutput").innerHTML = "invalid input"
+    }
+    
+}
+
+</script>
+
+
+
+</body>
+</html> 

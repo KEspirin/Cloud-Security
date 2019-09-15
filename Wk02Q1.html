@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+
+<body>
+
+    <h3>Affine Cipher: Encryption - Decryption</h3>
+
+    <table>
+        <tr>
+            <td>Plaintext:</td>
+            <td><textarea type="var" id="ept"></textarea></td>
+        </tr>
+        <tr>
+            <td>k_1:</td>
+            <td><input type="var" id="ek1"></input></td>
+        </tr>
+        <tr>
+            <td>k_2:</td>
+            <td><input type="var" id="ek2"></input></td>
+        </tr>
+        <tr>
+            <td align="center"><button id="encrypt" onclick="encrypt()">Encrypt</button></td>
+        </tr>
+        <tr>
+            <td>Ciphertext:</td>
+            <td><textarea type="var" id="ect" value = ""></textarea></td>
+        </tr>
+
+    </table>
+    <br></br>
+    <br></br>
+    <table>
+        <tr>
+            <td>Ciphertext:</td>
+            <td><textarea type="var" id="dct"></textarea></td>
+        </tr>
+        <tr>
+            <td>k_1:</td>
+            <td><input type="var" id="dk1"></input></td>
+        </tr>
+        <tr>
+            <td>k_2:</td>
+            <td><input type="var" id="dk2"></input></td>
+        </tr>
+        <tr>
+            <td align="center"><button id="encrypt" onclick="decrypt()">Decrypt</button></td>
+        </tr>
+        <tr>
+            <td>Plaintext:</td>
+            <td><textarea type="var" id="dpt" value = ""></textarea></td>
+        </tr>
+
+    </table>
+
+    <script>
+        function encrypt() {
+            var p = document.getElementById("ept").value.toLowerCase();
+            var k1 = document.getElementById("ek1").value;
+            var k2 = document.getElementById("ek2").value;
+
+            if (k1 < 26 && isNaN(k1) == false && k1 % 2 != 0 && k1 != 13) {
+                for (var i = 0; i < p.length; i++) {
+                    var order = p.charCodeAt(i) - 97;
+                    var code = ((k1 * order + k2) % 26 )+ 97;
+                    var c = String.fromCharCode(code);
+                    document.getElementById("ect").innerHTML = document.getElementById("ect").value + c;
+                }
+                
+            } else {
+                document.getElementById("ect").innerHTML = "invalid encrypt k1";
+            }
+        }
+
+        function decrypt() {
+            var c = document.getElementById("dct").value.toLowerCase();
+            var k1 = document.getElementById("dk1").value;
+            var k2 = document.getElementById("dk2").value;
+
+
+            if (k1 < 26 && isNaN(k1) == false && k1 % 2 != 0 && k1 != 13) {
+                for (var j = 1; j < 26; j++) {
+                    if ((k1 * j) % 26 == 1) {
+                        var k1i = j;
+                        break;
+                    }
+                }
+
+                for (var i = 0; i < c.length; i++) {
+                    var order = c.charCodeAt(i) - 97;
+                    var code = ((k1i * (order - k2)) % 26) + 97;
+                    var p = String.fromCharCode(code);
+                    document.getElementById("dpt").innerHTML = document.getElementById("dpt").value + p;
+                }
+            } else {
+                document.getElementById("dpt").innerHTML = "invalid decrypt k1";
+            }
+
+        }
+
+    </script>
+
+
+
+</body>
+
+</html>
