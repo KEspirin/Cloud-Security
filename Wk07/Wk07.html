@@ -45,7 +45,8 @@
         </tr>
         <tr>
             <td>Encrypted file:</td>
-            <td><textarea id="encryptedFile" cols="60" rows="10"></textarea><input type="hidden" id="encryptedFileInfo"></input></td>
+            <td><textarea id="encryptedFile" cols="60" rows="10"></textarea><input type="hidden"
+                    id="encryptedFileInfo"></input></td>
         </tr>
 
         <tr>
@@ -70,10 +71,12 @@
         </tr>
 
     </table>
-    
+
 
 
     <script>
+
+        
         function handleFileSelect(evt) {
             var files = evt.target.files; // FileList object
             var output = document.getElementById("fileContent");
@@ -166,7 +169,7 @@
             var plaintext = sjcl.decrypt(key, ciphertext, {}, {});
 
 
-                //plaintext = sjcl.codec.utf8String.fromBits(sjcl.mode.ccm.decrypt(aes, ciphertext, iv.split(" "), adata, "64"));
+            //plaintext = sjcl.codec.utf8String.fromBits(sjcl.mode.ccm.decrypt(aes, ciphertext, iv.split(" "), adata, "64"));
             // aes = new sjcl.cipher.aes(key);
 
             // // var message = document.getElementById("message").value;
