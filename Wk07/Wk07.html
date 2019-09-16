@@ -112,7 +112,7 @@
             var input = document.getElementById("key").value;
             var split = input.split(" ");
             var key = split.join("");
-            return Boolean(key.match(/^[0-9a-f]+$/i));
+            var isHex = Boolean(key.match(/^[0-9a-f]+$/i));
 
             if (isHex == false || key.length != 32 || input == "") {
                 return false;
