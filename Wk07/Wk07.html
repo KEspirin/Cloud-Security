@@ -136,8 +136,8 @@
 
 
             var message = document.getElementById("message").value;
-            var out = (new sjcl.misc.hmac(sjcl.codec.utf8String.toBits(key), sjcl.hash.sha256)).mac(message);
-            var hmac = sjcl.codec.base64.fromBits(out);
+            //var out = (new sjcl.misc.hmac(sjcl.codec.utf8String.toBits(key), sjcl.hash.sha256)).mac(message);
+            //var hmac = sjcl.codec.base64.fromBits(out);
 
             var p = {
                 adata: message,
@@ -152,7 +152,7 @@
 
             document.getElementById("encryptedFile").value = ciphertext.match(/"ct":"([^"]*)"/)[1];
             document.getElementById("encryptedFileInfo").value = ciphertext;
-            document.getElementById("hmac").value = hmac;
+            document.getElementById("hmac").value = JSON.parse(ciphertext).adata;
 
         }
 
@@ -210,11 +210,11 @@
 
         function saveinfotofile() {
 
-            var text = document.getElementById("encryptedFile").value;
-            var hmac = document.getElementById("hmac").value;
+            var text = document.getElementById("encryptedFileInfo").value;
+            //var hmac = document.getElementById("hmac").value;
             var filename = document.getElementById("savename2").value
 
-            text += hmac;
+            //text += hmac;
 
 
             save(text, filename);
