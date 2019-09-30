@@ -22,7 +22,7 @@ public class AesEncryption {
 
 	private SecretKeySpec key;
 	private IvParameterSpec iv;
-	private String transform = "AES/CBC/PKCS5Padding";
+	final private String transform = "AES/CBC/PKCS5Padding";
 	final private int bufferSize = 1024;
 	private Properties properties;
 
