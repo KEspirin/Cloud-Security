@@ -1,0 +1,65 @@
+#frame {
+    width: 100%;
+    text-align: center;
+    border: 1px solid;
+    padding: 8px;
+}
+
+
+input {
+    width: 30px;
+}
+
+body {
+    background-color: rgb(231, 231, 231);
+}
+
+#input {
+    border-collapse: collapse;
+    text-align: center;
+
+
+}
+
+#input td {
+    border: 1px solid rgb(182, 181, 181);
+
+}
+
+#input tr:nth-child(even) {
+    background-color: #afd4e0;
+}
+
+#middle {
+    text-align: center;
+    border-collapse: collapse;
+}
+
+#middle td {
+    border: 1px solid rgb(243, 196, 108);
+    width: 30px;
+}
+
+#middle tr:nth-child(even) {
+    background-color: #afd4e0;
+}
+
+#middle tr:nth-child(odd) {
+    background-color: #fce6ac;
+}
+
+#output {
+    border-collapse: collapse;
+    text-align: center;
+
+
+}
+
+#output td {
+    border: 1px solid rgb(182, 181, 181);
+    width: 30px;
+}
+
+#output tr:nth-child(even) {
+    background-color: #afd4e0;
+}
