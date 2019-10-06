@@ -110,37 +110,39 @@
     <script>
         var a = [];
 
-        //there are 12 rounds required for Keccak-f[25]. In this case, we need only RC[0] to RC[11] from the slide
-        //since the 25-bits state only has 1 slice, i.e., z=0, only the first bit in each RCs is needed to extract.
-        var round = 12;
-        var RC = [0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0]
+        // there are 12 rounds required for Keccak-f[25]. In this case, we need only RC[0] to RC[11] from the slide
+        // since the 25-bits state only has 1 slice, i.e., z=0, only the first bit in each RCs is needed to extract.
+        var RC = [0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0];
 
 
         function keccak() {
             readInput();
 
-            for (i = 0; i < round; i++) {
+            // there are 12 rounds required for Keccak-f[25].
+            for (let round = 0; round < 12; round++) {
+                console.log("round: "+round);
                 theta();
                 pi();
                 chi();
-                iota(RC[i]);
+                iota(RC[round]);
             }
 
+            // display result
             print();
 
         }
 
-        //read input and store as matrix
+        // read input and store as matrix
         function readInput() {
             let bpos = "b"
-            for (i = 0; i < 5; i++) {
+            for (let i = 0; i < 5; i++) {
                 let row = [];
-                for (j = 0; j < 5; j++) {
+                for (let j = 0; j < 5; j++) {
                     row[j] = document.getElementById(bpos + i + j).value;
                     
                 }
                 a[i] = row;
-                console.log("a[i]"+a[i]);
+                console.log("a["+i+ "]"+a[i]);
                 
             }
             
@@ -150,76 +152,90 @@
         function theta() {
             let c = [];
             let d = [];
-            for (i = 0; i < 5; i++) {
+            for (let i = 0; i < 5; i++) {
                 c[i] = a[0][i] ^ a[1][i] ^ a[2][i] ^ a[3][i] ^ a[4][i];
             }
             console.log("c"+c);
 
 
-            for (j = 0; j < 5; j++) {
+            for (let j = 0; j < 5; j++) {
 
                 // j + 4 mod 5 should equals to j - 1 mod 5, and since javascript
                 // cannnot handle negative number mod, therefore j+4 is used here.
+                // and since this is Keccak-f[25], which means there's only 1 slice
+                // therefore the rotation function rot() is eliminated here
+                // i.e. rot(0,1) = 0, rot(1,1) = 1
                 d[j] = c[(j + 4) % 5] ^ c[(j + 1) % 5];
             }
+            console.log("d"+d);
 
-            for (m = 0; m < 5; m++) {
+            for (let m = 0; m < 5; m++) {
                 for (n = 0; n < 5; n++) {
                     a[m][n] = a[m][n] ^ d[n];
                 }
             }
+            console.log("after theta: a"+a);
+
         }
 
         function pi() {
             let b = a;
+            console.log("before pi: a"+a);
 
-            for (i = 0; i < 5; i++) {
+            for (let i = 0; i < 5; i++) {
 
-                //arrange the row index to fit the order of a slice (2 1 0 4 3)
+                // arrange the row index to fit the order of a slice (2 1 0 4 3)
                 let y = (5 - ((i + 3) % 5)) % 5;
-                for (j = 0; j < 5; j++) {
+                for (let j = 0; j < 5; j++) {
 
-                    //arrange the column index to fit the order of a slice (3 4 0 1 2)
+                    // arrange the column index to fit the order of a slice (3 4 0 1 2)
                     let x = (j + 3) % 5;
 
-                    b[x][(2 * y + 3 * x) % 5] = a[y][x];
+                    // apply the formula
+                    b[y][(2 * x + 3 * y) % 5] = a[x][y];
                 }
             }
-
-            //update a
+            
+            // update a
             a = b;
+            console.log("after pi: a"+a);
         }
 
         // chi step
         function chi() {
-
+            console.log("before chi: a"+a);
             let compA = [];
             let shiftA = [];
 
-            for (i = 0; i < 5; i++) {
+            for (let i = 0; i < 5; i++) {
 
                 compA[i] = [];
                 shiftA[i] = [];
 
-                for (j = 0; j < 5; j++) {
+                for (let j = 0; j < 5; j++) {
 
                     var m = (j + 1) % 5;
                     var n = (j + 2) % 5;
 
-                    //32 bits signed integers, ~0 = -1, ~1 = -2, therefore +2 in the expression
+                    // javascript uses 32 bits signed integers for complement operation, i.e.  ~0 = -1, ~1 = -2.
+                    // Therefore +2 in the expression.
                     compA[i][j] = (~a[i][m]) + 2;
                     shiftA[i][j] = a[i][n];
                     a[i][j] = a[i][j] ^ (compA[i][j] & shiftA[i][j]);
                 }
             }
+            console.log("after chi: a"+a);
+
+
         }
 
 
 
         function iota(round) {
-
-            //a[0,0] (center of each slice) should be a[2][2] in js matrix
+            console.log("before iota: a[0][0]"+a[2][2])
+            // a[0,0] (center of each slice) should be a[2][2] in js matrix
             a[2][2] = a[2][2] ^ round;
+            console.log("after iota: a[0][0]"+a[2][2])
         }
 
 

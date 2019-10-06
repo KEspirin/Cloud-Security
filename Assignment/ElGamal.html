@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ElGamal Implementation</title>
+</head>
+
+<body>
+
+    <h3>ElGamal Implementation</h3>
+
+
+    <table cellspacing="30">
+        <tr>
+            <td>Prime p:</td>
+            <td><input type="number" min=0 id="p" onchange="validInput()"></td>
+            <td><span id="validp" style="color: red"></span></td>
+
+        </tr>
+
+        <tr>
+            <td id="empty"></td>
+            <td><button id="generateg" onclick="generateg()">Generate g↓</button></td>
+        </tr>
+
+        <tr>
+            <td>Generator g:</td>
+            <td id="empty"><span id="g"></span><input id="gvalue" type="hidden" readonly value=""></td>
+        </tr>
+
+        <tr>
+            <td>Private key x (2~p):</td>
+            <td><input type="number" min=2 id="x" onchange="validx()"></td>
+            <td><span id="validx" style="color: red"></span></td>
+        </tr>
+
+        <tr>
+            <td id="empty"></td>
+            <td><button id="generatex" onclick="generatey()">Generate y↓</button></td>
+        </tr>
+
+        <tr>
+            <td>y = g^x (mod p):</td>
+            <td><span id="y"></span><input id="yvalue" type="hidden" value=""></td>
+        </tr>
+
+        <tr>
+            <td>Public key (g, p, y):</td>
+            <td id="publicKey"></td>
+        </tr>
+
+        <tr>
+            <td>Message:</td>
+            <td><input type="number" id="m"></td>
+        </tr>
+
+        <tr>
+            <td>Random r:</td>
+            <td><input type="number" id="r"></td>
+        </tr>
+
+        <tr>
+            <td id="empty"></td>
+            <td><button id="encrypt" onclick="encrypt()">Encrypt↓</button></td>
+        </tr>
+
+        <tr>
+            <td>c = (g^r, m*y^r) mod p:</td>
+            <td><span id="c"></span><input id="c1value" type="hidden" value=""><input id="c2value" type="hidden"
+                    value=""></td>
+        </tr>
+
+        <tr>
+            <td id="empty"></td>
+            <td><button id="encrypt" onclick="encrypt()">Decrypt↓</button></td>
+        </tr>
+
+        <tr>
+            <td>a^(-x) mod p:</td>
+            <td><span id="ai"></span><input id="aInverse" type="hidden" value = ""></td>
+        </tr>
+
+
+        <tr>
+            <td>d = b/(a^x) mod p:</td>
+            <td id="d"></td>
+        </tr>
+
+    </table>
+
+
+    <script>
+
+        var pf = [];
+
+
+        function pValid(num) {
+            let n = Number(num);
+            if (Number.isInteger(n) == false || n <= 1 || isPrime(num) == false) {
+                return false;
+            }
+
+            return true;
+        }
+
+        function isPrime(test) {
+            for (var i = 2; i < test; i++) {
+                if (test % i === 0) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+
+        function validInput() {
+
+            let input = Number(document.getElementById("p").value);
+            if (pValid(input) == false) {
+                document.getElementById("validp").innerHTML = "*p has to be a positive prime number."
+            } else {
+                document.getElementById("validp").innerHTML = "";
+            }
+            document.getElementById("x").max = input - 1;
+        }
+
+
+        // store prime factors of a number 
+        function primeFactors(n) {
+            let temp = [];
+            pf = [];
+
+            // Print the number of 2s that divide n 
+            while (n % 2 == 0) {
+                temp.push(2);
+                n = n / 2;
+            }
+
+            // n must be odd at this point. So we can skip 
+            // one element (Note i = i +2) 
+            for (let i = 3; i <= Math.sqrt(n); i = i + 2) {
+                // While i divides n, print i and divide n 
+                while (n % i == 0) {
+                    temp.push(i);
+                    n = n / i;
+                }
+            }
+
+            // when n is a prime number greater than 2 
+            if (n > 2) {
+                temp.push(n);
+            }
+            pf = new Set(temp);
+
+        }
+
+
+        // find the largest primitive root for p
+        function generateg() {
+
+            let p = Number(document.getElementById("p").value);
+
+            if (isPrime(p) == false) {
+                document.getElementById("g").innerHTML = "invalid p";
+                return;
+            }
+
+            // Find value of Euler Totient function of n 
+            // Since n is a prime number, the value of Euler 
+            // Totient function is n-1 as there are n-1 
+            // relatively prime numbers. 
+            let phi = p - 1;
+            primeFactors(phi);
+
+            let a;
+
+            for (let r = phi; r > 2; r--) {
+                let flag = false;
+
+                for (a of pf) {
+
+                    // Check if r^((phi)/primefactors) mod p is 1
+                    if (fastModExp(r, (phi / a), p) == 1) {
+                        flag = true;
+                        break;
+                    }
+                }
+
+                // If there was no power with value 1. 
+                if (flag == false) {
+
+                    document.getElementById("gvalue").value = r;
+                    document.getElementById("g").innerHTML = r;
+                }
+            }
+
+        }
+
+
+
+        function validx() {
+            let x = document.getElementById("x").value;
+            let p = document.getElementById("p").value;
+
+            if (Number(x) >= Number(p) || Number(x) <= 1) {
+                document.getElementById("validx").innerHTML = "* 1 < x < p."
+                return false;
+            } else {
+                document.getElementById("validx").innerHTML = "";
+                return true;
+            }
+        }
+
+
+
+        function generatey() {
+            if (validx() == true) {
+                let x = Number(document.getElementById("x").value);
+                console.log(x)
+                let g = Number(document.getElementById("gvalue").value);
+                console.log(g)
+                let p = Number(document.getElementById("p").value);
+                console.log(p)
+
+                let y = fastModExp(g, x, p);
+                document.getElementById("y").innerHTML = y;
+                document.getElementById("yvalue").value = y;
+                console.log(y)
+                let publicKey = "(" + g + ", " + p + ", " + y + ")";
+                document.getElementById("publicKey").innerHTML = publicKey;
+                console.log(publicKey)
+            } else {
+                document.getElementById("publicKey").innerHTML = "invalid x";
+            }
+        }
+
+
+
+
+
+
+        // for m^e % n
+        function fastModExp(m, e, n) {
+            var eBin = e.toString(2).split("");
+            var eLen = eBin.length;
+            //alert("e:"+eBin);
+            var i = 0;
+            var resTotal = 1;
+            while (i < eLen) {
+                if (i == 0) {
+                    result = m % n;
+                } else {
+                    result = result * result;
+                    result = result % n;
+                }
+                if (eBin[eLen - 1 - i] == 1) {
+                    resTotal = resTotal * result;
+                    resTotal = resTotal % n;
+                }
+
+                i++;
+            }
+
+            return resTotal;
+        }
+
+
+
+    </script>
+
+
+
+</body>
+
+</html>
