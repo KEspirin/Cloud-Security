@@ -12,18 +12,18 @@
 
     <h3>Keccak-f[25] Implementation</h3>
 
-    <table id="frame">
+    <table id="frame" cellspacing="30">
         <th>
             <tr>
-                <td>Input A[x,y]</td>
-                <td>→</td>
-                <td>Output New A[x,y]</td>
+                <td class="grid">Input A[x,y]</td>
+                <td class="grid">→</td>
+                <td class="grid">Output New A[x,y]</td>
             </tr>
         </th>
 
         <tbody>
             <tr>
-                <td align="center">
+                <td class="grid" align="center">
                     <table id="input">
                         <tr>
                             <td><input id="b00" type="number" min=0 max=1 value=0></td>
@@ -63,8 +63,8 @@
                     </table>
                 </td>
 
-                <td><button id="show" onclick="keccak()">Show →</button></td>
-                <td align="center">
+                <td class="grid" ><button id="show" onclick="keccak()">Show →</button></td>
+                <td  class="grid" align="center">
                     <table id="output">
                         <tr>
                             <td id="a00" value=0>0</td>

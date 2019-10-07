@@ -1,8 +1,12 @@
 #frame {
-    width: 100%;
     text-align: center;
     border: 1px solid;
     padding: 8px;
+}
+
+.grid {
+    padding-left: 50px;
+    padding-right: 50px;
 }
 
 

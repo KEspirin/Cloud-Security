@@ -50,13 +50,17 @@
         </tr>
 
         <tr>
-            <td>Message:</td>
-            <td><input type="number" id="m"></td>
+            <td>Message for c1:</td>
+            <td><input type="number" id="c1m"></td>
+            <td>Message for c2:</td>
+            <td><input type="number" id="c2m"></td>
         </tr>
 
         <tr>
-            <td>Random r:</td>
-            <td><input type="number" id="r"></td>
+            <td>Random r for c1:</td>
+            <td><input type="number" id="c1r"></td>
+            <td>Random r for c2:</td>
+            <td><input type="number" id="c2r"></td>
         </tr>
 
         <tr>
@@ -65,10 +69,29 @@
         </tr>
 
         <tr>
-            <td>c = (g^r, m*y^r) mod p:</td>
+            <td>c1 = (g^r1, m1*y^r1) mod p:</td>
+            <td><span id="c"></span><input id="c1value" type="hidden" value=""><input id="c2value" type="hidden"
+                    value=""></td>
+            <td>c2 = (g^r2, m2*y^r2) mod p:</td>
             <td><span id="c"></span><input id="c1value" type="hidden" value=""><input id="c2value" type="hidden"
                     value=""></td>
         </tr>
+
+        <tr>
+            <td id="empty"></td>
+            <td><button id="encrypt" onclick="multiply()">Multiply ↓</button></td>
+        </tr>
+
+        <tr>
+            <td>m1 * m2:</td>
+            <td><span id="m1m2"></span></td>
+        </tr>
+
+        <tr>
+            <td>c1 * c2:</td>
+            <td><span id="c1c2"></span></td>
+        </tr>
+
 
         <tr>
             <td id="empty"></td>
@@ -237,7 +260,7 @@
 
 
 
-        function encrypt(){
+        function encrypt() {
             let m = Number(document.getElementById("m").value);
             let r = Number(document.getElementById("r").value);
             let p = Number(document.getElementById("p").value);
@@ -247,7 +270,7 @@
             // Encryption: random r, c=E(m,y)=(gr,myr) 
             let c1 = fastModExp(g, r, p);
             let c2 = (m * Number(fastModExp(y, r, p))) % p;
-            let c = "(" + c1 + ", " + c2 +")";
+            let c = "(" + c1 + ", " + c2 + ")";
 
             document.getElementById("c").innerHTML = c;
             document.getElementById("c1value").value = c1;
@@ -256,7 +279,7 @@
 
 
 
-        function decrypt(){
+        function decrypt() {
             let c1 = Number(document.getElementById("c1value").value);
             let c2 = Number(document.getElementById("c2value").value);
             let p = Number(document.getElementById("p").value);
