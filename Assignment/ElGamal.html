@@ -20,7 +20,7 @@
 
         <tr>
             <td id="empty"></td>
-            <td><button id="generateg" onclick="generateg()">Generate g↓</button></td>
+            <td><button id="generateg" onclick="generateg()">Generate g ↓</button></td>
         </tr>
 
         <tr>
@@ -36,7 +36,7 @@
 
         <tr>
             <td id="empty"></td>
-            <td><button id="generatex" onclick="generatey()">Generate y↓</button></td>
+            <td><button id="generatex" onclick="generatey()">Generate y ↓</button></td>
         </tr>
 
         <tr>
@@ -61,7 +61,7 @@
 
         <tr>
             <td id="empty"></td>
-            <td><button id="encrypt" onclick="encrypt()">Encrypt↓</button></td>
+            <td><button id="encrypt" onclick="encrypt()">Encrypt ↓</button></td>
         </tr>
 
         <tr>
@@ -72,18 +72,18 @@
 
         <tr>
             <td id="empty"></td>
-            <td><button id="encrypt" onclick="encrypt()">Decrypt↓</button></td>
+            <td><button id="encrypt" onclick="decrypt()">Decrypt ↓</button></td>
         </tr>
 
         <tr>
             <td>a^(-x) mod p:</td>
-            <td><span id="ai"></span><input id="aInverse" type="hidden" value = ""></td>
+            <td><span id="ai"></span></td>
         </tr>
 
 
         <tr>
             <td>d = b/(a^x) mod p:</td>
-            <td id="d"></td>
+            <td><span id="d"></span></td>
         </tr>
 
     </table>
@@ -199,8 +199,8 @@
 
 
         function validx() {
-            let x = document.getElementById("x").value;
-            let p = document.getElementById("p").value;
+            let x = Number(document.getElementById("x").value);
+            let p = Number(document.getElementById("p").value);
 
             if (Number(x) >= Number(p) || Number(x) <= 1) {
                 document.getElementById("validx").innerHTML = "* 1 < x < p."
@@ -225,6 +225,7 @@
                 let y = fastModExp(g, x, p);
                 document.getElementById("y").innerHTML = y;
                 document.getElementById("yvalue").value = y;
+
                 console.log(y)
                 let publicKey = "(" + g + ", " + p + ", " + y + ")";
                 document.getElementById("publicKey").innerHTML = publicKey;
@@ -232,6 +233,43 @@
             } else {
                 document.getElementById("publicKey").innerHTML = "invalid x";
             }
+        }
+
+
+
+        function encrypt(){
+            let m = Number(document.getElementById("m").value);
+            let r = Number(document.getElementById("r").value);
+            let p = Number(document.getElementById("p").value);
+            let g = Number(document.getElementById("gvalue").value);
+            let y = Number(document.getElementById("yvalue").value);
+
+            // Encryption: random r, c=E(m,y)=(gr,myr) 
+            let c1 = fastModExp(g, r, p);
+            let c2 = (m * Number(fastModExp(y, r, p))) % p;
+            let c = "(" + c1 + ", " + c2 +")";
+
+            document.getElementById("c").innerHTML = c;
+            document.getElementById("c1value").value = c1;
+            document.getElementById("c2value").value = c2;
+        }
+
+
+
+        function decrypt(){
+            let c1 = Number(document.getElementById("c1value").value);
+            let c2 = Number(document.getElementById("c2value").value);
+            let p = Number(document.getElementById("p").value);
+            // -x mod p = p - 1 - x
+            let minusX = p - 1 - Number(document.getElementById("x").value);
+
+            // Decryption: c = (a,b), m = D(c,x) = b/ax = (myr/grx) = m
+            // 
+            let axinverse = Number(fastModExp(c1, minusX, p));
+            let d = (axinverse * c2) % p;
+
+            document.getElementById("d").innerHTML = d;
+            document.getElementById("ai").innerHTML = axinverse;
         }
 
 
@@ -257,15 +295,10 @@
                     resTotal = resTotal * result;
                     resTotal = resTotal % n;
                 }
-
                 i++;
             }
-
             return resTotal;
         }
-
-
-
     </script>
 
 
