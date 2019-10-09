@@ -70,10 +70,10 @@
 
         <tr>
             <td>c1 = (g^r1, m1*y^r1) mod p:</td>
-            <td><span id="c"></span><input id="c1value" type="hidden" value=""><input id="c2value" type="hidden"
+            <td><span id="c1"></span><input id="c11value" type="hidden" value=""><input id="c12value" type="hidden"
                     value=""></td>
             <td>c2 = (g^r2, m2*y^r2) mod p:</td>
-            <td><span id="c"></span><input id="c1value" type="hidden" value=""><input id="c2value" type="hidden"
+            <td><span id="c2"></span><input id="c21value" type="hidden" value=""><input id="c22value" type="hidden"
                     value=""></td>
         </tr>
 
@@ -83,30 +83,36 @@
         </tr>
 
         <tr>
-            <td>m1 * m2:</td>
+            <td>m1 * m2 (mod p):</td>
             <td><span id="m1m2"></span></td>
         </tr>
 
         <tr>
-            <td>c1 * c2:</td>
-            <td><span id="c1c2"></span></td>
+            <td>c1 * c2 (mod p):</td>
+            <td><span id="c1c2"></span><input id="c1c21value" type="hidden" value=""><input id="c1c22value"
+                    type="hidden" value=""></td>
         </tr>
 
 
         <tr>
             <td id="empty"></td>
-            <td><button id="encrypt" onclick="decrypt()">Decrypt ↓</button></td>
+            <td><button id="decrypt" onclick="decrypt()">Decrypt ↓</button></td>
         </tr>
 
         <tr>
-            <td>a^(-x) mod p:</td>
-            <td><span id="ai"></span></td>
+            <td>D(C1):</td>
+            <td><span id="d1"></span></td>
+        </tr>
+
+        <tr>
+            <td>D(C2):</td>
+            <td><span id="d2"></span></td>
         </tr>
 
 
         <tr>
-            <td>d = b/(a^x) mod p:</td>
-            <td><span id="d"></span></td>
+            <td>D(c1*c2):</td>
+            <td><span id="d12"></span></td>
         </tr>
 
     </table>
@@ -261,42 +267,78 @@
 
 
         function encrypt() {
-            let m = Number(document.getElementById("m").value);
-            let r = Number(document.getElementById("r").value);
+            let c1m = Number(document.getElementById("c1m").value);
+            let c2m = Number(document.getElementById("c2m").value);
+            let c1r = Number(document.getElementById("c1r").value);
+            let c2r = Number(document.getElementById("c2r").value);
             let p = Number(document.getElementById("p").value);
             let g = Number(document.getElementById("gvalue").value);
             let y = Number(document.getElementById("yvalue").value);
 
             // Encryption: random r, c=E(m,y)=(gr,myr) 
-            let c1 = fastModExp(g, r, p);
-            let c2 = (m * Number(fastModExp(y, r, p))) % p;
-            let c = "(" + c1 + ", " + c2 + ")";
+            let c11 = fastModExp(g, c1r, p);
+            let c12 = (c1m * Number(fastModExp(y, c1r, p))) % p;
+            let c1 = "(" + c11 + ", " + c12 + ")";
 
-            document.getElementById("c").innerHTML = c;
-            document.getElementById("c1value").value = c1;
-            document.getElementById("c2value").value = c2;
+            let c21 = fastModExp(g, c2r, p);
+            let c22 = (c2m * Number(fastModExp(y, c2r, p))) % p;
+            let c2 = "(" + c21 + ", " + c22 + ")";
+
+            document.getElementById("c1").innerHTML = c1;
+            document.getElementById("c2").innerHTML = c2;
+            document.getElementById("c11value").value = c11;
+            document.getElementById("c12value").value = c12;
+            document.getElementById("c21value").value = c21;
+            document.getElementById("c22value").value = c22;
         }
 
+
+        function multiply() {
+            let c1m = Number(document.getElementById("c1m").value);
+            let c2m = Number(document.getElementById("c2m").value);
+            let c11 = Number(document.getElementById("c11value").value);
+            let c12 = Number(document.getElementById("c12value").value);
+            let c21 = Number(document.getElementById("c21value").value);
+            let c22 = Number(document.getElementById("c22value").value);
+            let p = Number(document.getElementById("p").value);
+
+            let m1m2 = (c1m * c2m) % p;
+            let c1c21 = (c11 * c21) % p;
+            let c1c22 = (c12 * c22) % p;
+            let c1c2 = "(" + c1c21 + ", " + c1c22 + ")";
+
+
+            document.getElementById("m1m2").innerHTML = m1m2;
+            document.getElementById("c1c2").innerHTML = c1c2;
+            document.getElementById("c1c21value").value = c1c21;
+            document.getElementById("c1c22value").value = c1c22;
+        }
 
 
         function decrypt() {
-            let c1 = Number(document.getElementById("c1value").value);
-            let c2 = Number(document.getElementById("c2value").value);
+            let c11 = Number(document.getElementById("c11value").value);
+            let c12 = Number(document.getElementById("c12value").value);
+            let c21 = Number(document.getElementById("c21value").value);
+            let c22 = Number(document.getElementById("c22value").value);
+            let c1c21 = Number(document.getElementById("c1c21value").value);
+            let c1c22 = Number(document.getElementById("c1c22value").value);
             let p = Number(document.getElementById("p").value);
+
             // -x mod p = p - 1 - x
             let minusX = p - 1 - Number(document.getElementById("x").value);
 
-            // Decryption: c = (a,b), m = D(c,x) = b/ax = (myr/grx) = m
-            // 
-            let axinverse = Number(fastModExp(c1, minusX, p));
-            let d = (axinverse * c2) % p;
+            // Decryption: c = (a,b), m = D(c,x) = b/a^x = (my^r/g^rx) = m
+            let c1axinverse = Number(fastModExp(c11, minusX, p));
+            let c2axinverse = Number(fastModExp(c21, minusX, p));
+            let c1c2axinverse = Number(fastModExp(c1c21, minusX, p));
+            let dc1 = (c1axinverse * c12) % p;
+            let dc2 = (c2axinverse * c22) % p;
+            let dc1c2 = (c1c2axinverse * c1c22) % p;
 
-            document.getElementById("d").innerHTML = d;
-            document.getElementById("ai").innerHTML = axinverse;
+            document.getElementById("d1").innerHTML = dc1;
+            document.getElementById("d2").innerHTML = dc2;
+            document.getElementById("d12").innerHTML = dc1c2;
         }
-
-
-
 
 
 

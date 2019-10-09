@@ -16,7 +16,7 @@
         <th>
             <tr>
                 <td class="grid">Input A[x,y]</td>
-                <td class="grid">→</td>
+                <td class="grid"> →</td>
                 <td class="grid">Output New A[x,y]</td>
             </tr>
         </th>
@@ -63,8 +63,8 @@
                     </table>
                 </td>
 
-                <td class="grid" ><button id="show" onclick="keccak()">Show →</button></td>
-                <td  class="grid" align="center">
+                <td class="grid"><button id="show" onclick="keccak()">show →</button></td>
+                <td class="grid" align="center">
                     <table id="output">
                         <tr>
                             <td id="a00" value=0>0</td>
@@ -107,6 +107,506 @@
         </tbody>
     </table>
 
+    <p><strong>*Note:&nbsp</strong>&nbspThese sections below were meant to show the intermediate steps, however there are 12 rounds in Keccak-f[25], and the results from a new round will
+    override the display of previous round. Therefore it will only show the result from round 12. </p>
+    <p>To reveal the complete intermediates, please press&nbsp<strong>F12&nbsp</strong>and check the console.</p>
+
+    <h3>θ Step</h3>
+
+    <table id="frame" cellspacing="30">
+        <th>
+            <tr>
+                <td class="grid">Input A[x,y]</td>
+                <td class="grid">C[x]</td>
+                <td class="grid">D[x]</td>
+                <td class="grid">Output New A[x,y]</td>
+            </tr>
+        </th>
+
+        <tbody>
+            <tr>
+                <td class="grid" align="center">
+                    <table id="output">
+                        <tr>
+                            <td id="thetaa00" value=0>0</td>
+                            <td id="thetaa01" value=0>0</td>
+                            <td id="thetaa02" value=0>0</td>
+                            <td id="thetaa03" value=0>0</td>
+                            <td id="thetaa04" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="thetaa10" value=0>0</td>
+                            <td id="thetaa11" value=0>0</td>
+                            <td id="thetaa12" value=0>0</td>
+                            <td id="thetaa13" value=0>0</td>
+                            <td id="thetaa14" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="thetaa20" value=0>0</td>
+                            <td id="thetaa21" value=0>0</td>
+                            <td id="thetaa22" value=0>0</td>
+                            <td id="thetaa23" value=0>0</td>
+                            <td id="thetaa24" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="thetaa30" value=0>0</td>
+                            <td id="thetaa31" value=0>0</td>
+                            <td id="thetaa32" value=0>0</td>
+                            <td id="thetaa33" value=0>0</td>
+                            <td id="thetaa34" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="thetaa40" value=0>0</td>
+                            <td id="thetaa41" value=0>0</td>
+                            <td id="thetaa42" value=0>0</td>
+                            <td id="thetaa43" value=0>0</td>
+                            <td id="thetaa44" value=0>0</td>
+                        </tr>
+                    </table>
+                </td>
+
+                <td class="grid">
+                    <table id="output">
+                        <tr>
+                            <td id="thetac00" value=0>0</td>
+                            <td id="thetac01" value=0>0</td>
+                            <td id="thetac02" value=0>0</td>
+                            <td id="thetac03" value=0>0</td>
+                            <td id="thetac04" value=0>0</td>
+                        </tr>
+                    </table>
+                </td>
+                <td class="grid">
+                    <table id="output">
+                        <tr>
+                            <td id="thetad00" value=0>0</td>
+                            <td id="thetad01" value=0>0</td>
+                            <td id="thetad02" value=0>0</td>
+                            <td id="thetad03" value=0>0</td>
+                            <td id="thetad04" value=0>0</td>
+                        </tr>
+
+                    </table>
+                </td>
+                <td class="grid" align="center">
+                    <table id="output">
+                        <tr>
+                            <td id="theta00" value=0>0</td>
+                            <td id="theta01" value=0>0</td>
+                            <td id="theta02" value=0>0</td>
+                            <td id="theta03" value=0>0</td>
+                            <td id="theta04" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="theta10" value=0>0</td>
+                            <td id="theta11" value=0>0</td>
+                            <td id="theta12" value=0>0</td>
+                            <td id="theta13" value=0>0</td>
+                            <td id="theta14" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="theta20" value=0>0</td>
+                            <td id="theta21" value=0>0</td>
+                            <td id="theta22" value=0>0</td>
+                            <td id="theta23" value=0>0</td>
+                            <td id="theta24" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="theta30" value=0>0</td>
+                            <td id="theta31" value=0>0</td>
+                            <td id="theta32" value=0>0</td>
+                            <td id="theta33" value=0>0</td>
+                            <td id="theta34" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="theta40" value=0>0</td>
+                            <td id="theta41" value=0>0</td>
+                            <td id="theta42" value=0>0</td>
+                            <td id="theta43" value=0>0</td>
+                            <td id="theta44" value=0>0</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>π Step</h3>
+
+    <table id="frame" cellspacing="30">
+        <th>
+            <tr>
+                <td class="grid">Input A[x,y]</td>
+                <td class="grid">→</td>
+                <td class="grid">Output New A[x,y]</td>
+            </tr>
+        </th>
+
+        <tbody>
+            <tr>
+                <td class="grid" align="center">
+                    <table id="output">
+                        <tr>
+                            <td id="pia00" value=0>0</td>
+                            <td id="pia01" value=0>0</td>
+                            <td id="pia02" value=0>0</td>
+                            <td id="pia03" value=0>0</td>
+                            <td id="pia04" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="pia10" value=0>0</td>
+                            <td id="pia11" value=0>0</td>
+                            <td id="pia12" value=0>0</td>
+                            <td id="pia13" value=0>0</td>
+                            <td id="pia14" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="pia20" value=0>0</td>
+                            <td id="pia21" value=0>0</td>
+                            <td id="pia22" value=0>0</td>
+                            <td id="pia23" value=0>0</td>
+                            <td id="pia24" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="pia30" value=0>0</td>
+                            <td id="pia31" value=0>0</td>
+                            <td id="pia32" value=0>0</td>
+                            <td id="pia33" value=0>0</td>
+                            <td id="pia34" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="pia40" value=0>0</td>
+                            <td id="pia41" value=0>0</td>
+                            <td id="pia42" value=0>0</td>
+                            <td id="pia43" value=0>0</td>
+                            <td id="pia44" value=0>0</td>
+                        </tr>
+                    </table>
+                </td>
+
+                <td class="grid"> →</td>
+                <td class="grid" align="center">
+                    <table id="output">
+                        <tr>
+                            <td id="pi00" value=0>0</td>
+                            <td id="pi01" value=0>0</td>
+                            <td id="pi02" value=0>0</td>
+                            <td id="pi03" value=0>0</td>
+                            <td id="pi04" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="pi10" value=0>0</td>
+                            <td id="pi11" value=0>0</td>
+                            <td id="pi12" value=0>0</td>
+                            <td id="pi13" value=0>0</td>
+                            <td id="pi14" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="pi20" value=0>0</td>
+                            <td id="pi21" value=0>0</td>
+                            <td id="pi22" value=0>0</td>
+                            <td id="pi23" value=0>0</td>
+                            <td id="pi24" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="pi30" value=0>0</td>
+                            <td id="pi31" value=0>0</td>
+                            <td id="pi32" value=0>0</td>
+                            <td id="pi33" value=0>0</td>
+                            <td id="pi34" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="pi40" value=0>0</td>
+                            <td id="pi41" value=0>0</td>
+                            <td id="pi42" value=0>0</td>
+                            <td id="pi43" value=0>0</td>
+                            <td id="pi44" value=0>0</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>χ Step</h3>
+
+    <table id="frame" cellspacing="30">
+        <th>
+            <tr>
+                <td>Original B[x,y]</td>
+                <td>⊕(</td>
+                <td>(~B[x+1,y])</td>
+                <td>^</td>
+                <td>B[x+2,y])</td>
+                <td></td>
+                <td>New A[x,y]</td>
+            </tr>
+        </th>
+
+        <tbody>
+            <tr>
+                <td align="center">
+                    <table id="output">
+                        <tr>
+                            <td id="chib00" value=0>0</td>
+                            <td id="chib01" value=0>0</td>
+                            <td id="chib02" value=0>0</td>
+                            <td id="chib03" value=0>0</td>
+                            <td id="chib04" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="chib10" value=0>0</td>
+                            <td id="chib11" value=0>0</td>
+                            <td id="chib12" value=0>0</td>
+                            <td id="chib13" value=0>0</td>
+                            <td id="chib14" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="chib20" value=0>0</td>
+                            <td id="chib21" value=0>0</td>
+                            <td id="chib22" value=0>0</td>
+                            <td id="chib23" value=0>0</td>
+                            <td id="chib24" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="chib30" value=0>0</td>
+                            <td id="chib31" value=0>0</td>
+                            <td id="chib32" value=0>0</td>
+                            <td id="chib33" value=0>0</td>
+                            <td id="chib34" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="chib40" value=0>0</td>
+                            <td id="chib41" value=0>0</td>
+                            <td id="chib42" value=0>0</td>
+                            <td id="chib43" value=0>0</td>
+                            <td id="chib44" value=0>0</td>
+                        </tr>
+                    </table>
+                </td>
+
+                <td>⊕(</td>
+                <td align="center">
+                    <table id="output">
+                        <tr>
+                            <td id="chi~b00" value=0>0</td>
+                            <td id="chi~b01" value=0>0</td>
+                            <td id="chi~b02" value=0>0</td>
+                            <td id="chi~b03" value=0>0</td>
+                            <td id="chi~b04" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="chi~b10" value=0>0</td>
+                            <td id="chi~b11" value=0>0</td>
+                            <td id="chi~b12" value=0>0</td>
+                            <td id="chi~b13" value=0>0</td>
+                            <td id="chi~b14" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="chi~b20" value=0>0</td>
+                            <td id="chi~b21" value=0>0</td>
+                            <td id="chi~b22" value=0>0</td>
+                            <td id="chi~b23" value=0>0</td>
+                            <td id="chi~b24" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="chi~b30" value=0>0</td>
+                            <td id="chi~b31" value=0>0</td>
+                            <td id="chi~b32" value=0>0</td>
+                            <td id="chi~b33" value=0>0</td>
+                            <td id="chi~b34" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="chi~b40" value=0>0</td>
+                            <td id="chi~b41" value=0>0</td>
+                            <td id="chi~b42" value=0>0</td>
+                            <td id="chi~b43" value=0>0</td>
+                            <td id="chi~b44" value=0>0</td>
+                        </tr>
+                    </table>
+                </td>
+                <td>^</td>
+                <td align="center">
+                    <table id="output">
+                        <tr>
+                            <td id="chib100" value=0>0</td>
+                            <td id="chib101" value=0>0</td>
+                            <td id="chib102" value=0>0</td>
+                            <td id="chib103" value=0>0</td>
+                            <td id="chib104" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="chib110" value=0>0</td>
+                            <td id="chib111" value=0>0</td>
+                            <td id="chib112" value=0>0</td>
+                            <td id="chib113" value=0>0</td>
+                            <td id="chib114" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="chib120" value=0>0</td>
+                            <td id="chib121" value=0>0</td>
+                            <td id="chib122" value=0>0</td>
+                            <td id="chib123" value=0>0</td>
+                            <td id="chib124" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="chib130" value=0>0</td>
+                            <td id="chib131" value=0>0</td>
+                            <td id="chib132" value=0>0</td>
+                            <td id="chib133" value=0>0</td>
+                            <td id="chib134" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="chib140" value=0>0</td>
+                            <td id="chib141" value=0>0</td>
+                            <td id="chib142" value=0>0</td>
+                            <td id="chib143" value=0>0</td>
+                            <td id="chib144" value=0>0</td>
+                        </tr>
+                    </table>
+                </td>
+                <td>→</td>
+                <td align="center">
+                    <table id="output">
+                        <tr>
+                            <td id="chi00" value=0>0</td>
+                            <td id="chi01" value=0>0</td>
+                            <td id="chi02" value=0>0</td>
+                            <td id="chi03" value=0>0</td>
+                            <td id="chi04" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="chi10" value=0>0</td>
+                            <td id="chi11" value=0>0</td>
+                            <td id="chi12" value=0>0</td>
+                            <td id="chi13" value=0>0</td>
+                            <td id="chi14" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="chi20" value=0>0</td>
+                            <td id="chi21" value=0>0</td>
+                            <td id="chi22" value=0>0</td>
+                            <td id="chi23" value=0>0</td>
+                            <td id="chi24" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="chi30" value=0>0</td>
+                            <td id="chi31" value=0>0</td>
+                            <td id="chi32" value=0>0</td>
+                            <td id="chi33" value=0>0</td>
+                            <td id="chi34" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="chi40" value=0>0</td>
+                            <td id="chi41" value=0>0</td>
+                            <td id="chi42" value=0>0</td>
+                            <td id="chi43" value=0>0</td>
+                            <td id="chi44" value=0>0</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <h3>ι Step</h3>
+
+    <table id="frame" cellspacing="30">
+        <th>
+            <tr>
+                <td class="grid">Input A[x,y]</td>
+                <td class="grid">→</td>
+                <td class="grid">Output New A[x,y]</td>
+            </tr>
+        </th>
+
+        <tbody>
+            <tr>
+                <td class="grid" align="center">
+                    <table id="output">
+                        <tr>
+                            <td id="iotaa00" value=0>0</td>
+                            <td id="iotaa01" value=0>0</td>
+                            <td id="iotaa02" value=0>0</td>
+                            <td id="iotaa03" value=0>0</td>
+                            <td id="iotaa04" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="iotaa10" value=0>0</td>
+                            <td id="iotaa11" value=0>0</td>
+                            <td id="iotaa12" value=0>0</td>
+                            <td id="iotaa13" value=0>0</td>
+                            <td id="iotaa14" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="iotaa20" value=0>0</td>
+                            <td id="iotaa21" value=0>0</td>
+                            <td id="iotaa22" value=0>0</td>
+                            <td id="iotaa23" value=0>0</td>
+                            <td id="iotaa24" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="iotaa30" value=0>0</td>
+                            <td id="iotaa31" value=0>0</td>
+                            <td id="iotaa32" value=0>0</td>
+                            <td id="iotaa33" value=0>0</td>
+                            <td id="iotaa34" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="iotaa40" value=0>0</td>
+                            <td id="iotaa41" value=0>0</td>
+                            <td id="iotaa42" value=0>0</td>
+                            <td id="iotaa43" value=0>0</td>
+                            <td id="iotaa44" value=0>0</td>
+                        </tr>
+                    </table>
+                </td>
+
+                <td class="grid"> →</td>
+                <td class="grid" align="center">
+                    <table id="output">
+                        <tr>
+                            <td id="iota00" value=0>0</td>
+                            <td id="iota01" value=0>0</td>
+                            <td id="iota02" value=0>0</td>
+                            <td id="iota03" value=0>0</td>
+                            <td id="iota04" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="iota10" value=0>0</td>
+                            <td id="iota11" value=0>0</td>
+                            <td id="iota12" value=0>0</td>
+                            <td id="iota13" value=0>0</td>
+                            <td id="iota14" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="iota20" value=0>0</td>
+                            <td id="iota21" value=0>0</td>
+                            <td id="iota22" value=0>0</td>
+                            <td id="iota23" value=0>0</td>
+                            <td id="iota24" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="iota30" value=0>0</td>
+                            <td id="iota31" value=0>0</td>
+                            <td id="iota32" value=0>0</td>
+                            <td id="iota33" value=0>0</td>
+                            <td id="iota34" value=0>0</td>
+                        </tr>
+                        <tr>
+                            <td id="iota40" value=0>0</td>
+                            <td id="iota41" value=0>0</td>
+                            <td id="iota42" value=0>0</td>
+                            <td id="iota43" value=0>0</td>
+                            <td id="iota44" value=0>0</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
     <script>
         var a = [];
 
@@ -120,7 +620,7 @@
 
             // there are 12 rounds required for Keccak-f[25].
             for (let round = 0; round < 12; round++) {
-                console.log("round: "+round);
+                console.log("round: " + round);
                 theta();
                 pi();
                 chi();
@@ -128,7 +628,7 @@
             }
 
             // display result
-            print();
+            print("a");
 
         }
 
@@ -139,23 +639,24 @@
                 let row = [];
                 for (let j = 0; j < 5; j++) {
                     row[j] = document.getElementById(bpos + i + j).value;
-                    
+
                 }
                 a[i] = row;
-                console.log("a["+i+ "]"+a[i]);
-                
+                console.log("a[" + i + "]" + a[i]);
             }
-            
         }
 
         // theta step
         function theta() {
+            print("thetaa");
+
             let c = [];
             let d = [];
             for (let i = 0; i < 5; i++) {
                 c[i] = a[0][i] ^ a[1][i] ^ a[2][i] ^ a[3][i] ^ a[4][i];
             }
-            console.log("c"+c);
+            console.log("c" + c);
+            printArray(c, "thetac");
 
 
             for (let j = 0; j < 5; j++) {
@@ -167,20 +668,23 @@
                 // i.e. rot(0,1) = 0, rot(1,1) = 1
                 d[j] = c[(j + 4) % 5] ^ c[(j + 1) % 5];
             }
-            console.log("d"+d);
+            console.log("d" + d);
+            printArray(d, "thetad");
 
             for (let m = 0; m < 5; m++) {
                 for (n = 0; n < 5; n++) {
                     a[m][n] = a[m][n] ^ d[n];
                 }
             }
-            console.log("after theta: a"+a);
+            console.log("after theta: a" + a);
+            print("theta");
 
         }
 
         function pi() {
+            print("pia");
             let b = a;
-            console.log("before pi: a"+a);
+            console.log("before pi: a" + a);
 
             for (let i = 0; i < 5; i++) {
 
@@ -195,15 +699,17 @@
                     b[y][(2 * x + 3 * y) % 5] = a[x][y];
                 }
             }
-            
+
             // update a
             a = b;
-            console.log("after pi: a"+a);
+            console.log("after pi: a" + a);
+            print("pi");
         }
 
         // chi step
         function chi() {
-            console.log("before chi: a"+a);
+            print("chib");
+            console.log("before chi: a" + a);
             let compA = [];
             let shiftA = [];
 
@@ -224,7 +730,11 @@
                     a[i][j] = a[i][j] ^ (compA[i][j] & shiftA[i][j]);
                 }
             }
-            console.log("after chi: a"+a);
+
+            printChi(compA, "chi~b");
+            printChi(shiftA, "chib1");
+            print("chi");
+            console.log("after chi: a" + a);
 
 
         }
@@ -232,19 +742,38 @@
 
 
         function iota(round) {
-            console.log("before iota: a[0][0]"+a[2][2])
+            print("iotaa");
+            console.log("before iota: a[0][0]" + a[2][2])
             // a[0,0] (center of each slice) should be a[2][2] in js matrix
             a[2][2] = a[2][2] ^ round;
-            console.log("after iota: a[0][0]"+a[2][2])
+            console.log("after iota: a[0][0]" + a[2][2])
+            print("iota");
         }
 
 
 
-        function print() {
-            for (i = 0; i < 5; i++) {
-                for (j = 0; j < 5; j++) {
-                    document.getElementById("a" + i + j).innerHTML = a[i][j];
+
+        function print(target) {
+            for (let i = 0; i < 5; i++) {
+                for (let j = 0; j < 5; j++) {
+                    document.getElementById(target + i + j).innerHTML = a[i][j];
                 }
+            }
+        }
+
+        function printChi(array, target){
+
+            for (let i = 0; i < 5; i++) {
+                for (let j = 0; j < 5; j++) {
+                    document.getElementById(target + i + j).innerHTML = array[i][j];
+                }
+            }
+        }
+
+        function printArray(array, target) {
+            let i = "0";
+            for (let j = 0; j < 5; j++) {
+                document.getElementById(target + i + j).innerHTML = array[j];
             }
         }
 
