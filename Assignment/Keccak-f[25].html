@@ -63,7 +63,7 @@
                     </table>
                 </td>
 
-                <td class="grid"><button id="show" onclick="keccak()">show →</button></td>
+                <td class="grid"><button id="show" onclick="keccak12()">Run 12 Rounds →</button></td>
                 <td class="grid" align="center">
                     <table id="output">
                         <tr>
@@ -104,12 +104,17 @@
                     </table>
                 </td>
             </tr>
+            <tr>
+                <td><button id="show" onclick="keccak()">Run Next Round ↓</button></td>
+            </tr>
+            <tr>
+                <td><strong>Round:&nbsp</strong><span id=roundNo>0</span></td>
+            </tr>
+            <tr>
+                <td><button onclick="reset()">Reset</button></td>
+            </tr>
         </tbody>
     </table>
-
-    <p><strong>*Note:&nbsp</strong>&nbspThese sections below were meant to show the intermediate steps, however there are 12 rounds in Keccak-f[25], and the results from a new round will
-    override the display of previous round. Therefore it will only show the result from round 12. </p>
-    <p>To reveal the complete intermediates, please press&nbsp<strong>F12&nbsp</strong>and check the console.</p>
 
     <h3>θ Step</h3>
 
@@ -563,7 +568,7 @@
                     </table>
                 </td>
 
-                <td class="grid"> →</td>
+                <td class="grid"><input readonly size="35" id="roundConstant"></td>
                 <td class="grid" align="center">
                     <table id="output">
                         <tr>
@@ -613,9 +618,9 @@
         // there are 12 rounds required for Keccak-f[25]. In this case, we need only RC[0] to RC[11] from the slide
         // since the 25-bits state only has 1 slice, i.e., z=0, only the first bit in each RCs is needed to extract.
         var RC = [0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0];
+        var count = 0;
 
-
-        function keccak() {
+        function keccak12() {
             readInput();
 
             // there are 12 rounds required for Keccak-f[25].
@@ -630,6 +635,32 @@
             // display result
             print("a");
 
+        }
+
+        function keccak() {
+            readInput();
+            let r = (count % 12) + 1;
+
+            // there are 12 rounds required for Keccak-f[25].
+            for (let round = 0; round < r; round++) {
+                console.log("round: " + round);
+                theta();
+                pi();
+                chi();
+                iota(RC[round]);
+            }
+            // display result
+            print("a");
+
+            document.getElementById("roundNo").innerHTML = r;
+            count++;
+            
+        }
+
+        // reset round number
+        function reset(){
+            count = 0;
+            document.getElementById("roundNo").innerHTML = count;
         }
 
         // read input and store as matrix
@@ -683,11 +714,16 @@
 
         function pi() {
             print("pia");
-            let b = a;
+            // initialize b
+            let b = [];
+            b[0] = [];
+            b[1] = [];
+            b[2] = [];
+            b[3] = [];
+            b[4] = [];
             console.log("before pi: a" + a);
 
             for (let i = 0; i < 5; i++) {
-
                 // arrange the row index to fit the order of a slice (2 1 0 4 3)
                 let y = (5 - ((i + 3) % 5)) % 5;
                 for (let j = 0; j < 5; j++) {
@@ -695,8 +731,13 @@
                     // arrange the column index to fit the order of a slice (3 4 0 1 2)
                     let x = (j + 3) % 5;
 
+                    let by = (2 * x + 3 * y) % 5;
+
+                    // convert back to js matix rule
+                    by = ((5 - by) + 2) % 5;
+
                     // apply the formula
-                    b[y][(2 * x + 3 * y) % 5] = a[x][y];
+                    b[by][j] = a[i][j];
                 }
             }
 
@@ -742,11 +783,26 @@
 
 
         function iota(round) {
+            let roundConstant = [
+                "0x0000000000000001",
+                "0x0000000000008082",
+                "0x800000000000808A",
+                "0x8000000080008000",
+                "0x000000000000808B",
+                "0x0000000080000001",
+                "0x8000000000008009",
+                "0x000000000000008A",
+                "0x0000000000000088",
+                "0x0000000080008009",
+                "0x000000008000000A"
+            ];
+
             print("iotaa");
             console.log("before iota: a[0][0]" + a[2][2])
             // a[0,0] (center of each slice) should be a[2][2] in js matrix
             a[2][2] = a[2][2] ^ round;
             console.log("after iota: a[0][0]" + a[2][2])
+            document.getElementById("roundConstant").value = roundConstant[round];
             print("iota");
         }
 
@@ -761,7 +817,7 @@
             }
         }
 
-        function printChi(array, target){
+        function printChi(array, target) {
 
             for (let i = 0; i < 5; i++) {
                 for (let j = 0; j < 5; j++) {
