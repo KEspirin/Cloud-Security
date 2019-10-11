@@ -13,35 +13,39 @@
     <table cellspacing="30">
         <tr>
             <td>Prime p:</td>
-            <td><input type="number" min=0 id="p" onchange="validInput()"></td>
-            <td><span id="validp" style="color: red"></span></td>
-
-        </tr>
-
-        <tr>
-            <td id="empty"></td>
-            <td><button id="generateg" onclick="generateg()">Generate g ↓</button></td>
+            <td><input type="number" min=0 id="p"></td>
         </tr>
 
         <tr>
             <td>Generator g:</td>
-            <td id="empty"><span id="g"></span><input id="gvalue" type="hidden" readonly value=""></td>
+            <td id="empty"><input id="g"></td>
         </tr>
 
         <tr>
-            <td>Private key x (2~p):</td>
-            <td><input type="number" min=2 id="x" onchange="validx()"></td>
-            <td><span id="validx" style="color: red"></span></td>
+            <td>Order Q:</td>
+            <td id="empty"><input id="q"></td>
         </tr>
 
         <tr>
             <td id="empty"></td>
-            <td><button id="generatex" onclick="generatey()">Generate y ↓</button></td>
+            <td><button id="generatex" onclick="randomx()">Generate x ↓</button></td>
+        </tr>
+
+        <tr>
+            <td>Private key x:</td>
+            <td><input id="x" readonly></td>
+            <td> 1&ltx&ltQ</td>
+        </tr>
+
+        <tr>
+            <td id="empty"></td>
+            <td><button id="generatey" onclick="generatey()">Generate y ↓</button></td>
+
         </tr>
 
         <tr>
             <td>y = g^x (mod p):</td>
-            <td><span id="y"></span><input id="yvalue" type="hidden" value=""></td>
+            <td><input id="y" readonly></td>
         </tr>
 
         <tr>
@@ -50,17 +54,19 @@
         </tr>
 
         <tr>
-            <td>Message for c1:</td>
-            <td><input type="number" id="c1m"></td>
-            <td>Message for c2:</td>
-            <td><input type="number" id="c2m"></td>
+            <td>Message M:</td>
+            <td><input type="number" id="m"></td>
         </tr>
 
         <tr>
-            <td>Random r for c1:</td>
-            <td><input type="number" id="c1r"></td>
-            <td>Random r for c2:</td>
-            <td><input type="number" id="c2r"></td>
+            <td id="empty"></td>
+            <td><button id="generater" onclick="randomr()">Generate R ↓</button></td>
+        </tr>
+
+        <tr>
+            <td>Random R:</td>
+            <td><input type="number" id="r" readonly></td>
+            <td> 1&ltR&ltQ</td>
         </tr>
 
         <tr>
@@ -69,12 +75,61 @@
         </tr>
 
         <tr>
-            <td>c1 = (g^r1, m1*y^r1) mod p:</td>
-            <td><span id="c1"></span><input id="c11value" type="hidden" value=""><input id="c12value" type="hidden"
-                    value=""></td>
-            <td>c2 = (g^r2, m2*y^r2) mod p:</td>
-            <td><span id="c2"></span><input id="c21value" type="hidden" value=""><input id="c22value" type="hidden"
-                    value=""></td>
+            <td>a = g^R mod p:</td>
+            <td><input id="a" readonly></td>
+
+        </tr>
+        <tr>
+            <td>b = M*y^R mod p:</td>
+            <td><input id="b" readonly></td>
+
+        </tr>
+        <tr>
+            <td>c = (a, b):</td>
+            <td><span id="c"></span></td>
+
+        </tr>
+
+        <tr>
+            <td id="empty"></td>
+            <td><button id="encrypt" onclick="decrypt()">Decrypt ↓</button></td>
+        </tr>
+
+        <tr>
+            <td>D = b/(a^x) mod p:</td>
+            <td><input id="d" readonly></td>
+
+        </tr>
+        <tr></tr>
+        <tr></tr>
+        <tr>
+            <td><Strong>Multiplication Over Encrypted Data</Strong></td>
+        </tr>
+
+        <tr>
+            <td>N1:</td>
+            <td><input id="n1"></td>
+            <td>(an integer less than P)</td>
+        </tr>
+        <tr>
+            <td>N2:</td>
+            <td><input id="n2"></td>
+            <td>(an integer less than P)</td>
+        </tr>
+        <tr>
+            <td>N3:</td>
+            <td><input id="n3"></td>
+            <td>(an integer less than P)</td>
+        </tr>
+        <tr>
+            <td>N4:</td>
+            <td><input id="n4"></td>
+            <td>(an integer less than P)</td>
+        </tr>
+        <tr>
+            <td>N5:</td>
+            <td><input id="n5"></td>
+            <td>(an integer less than P)</td>
         </tr>
 
         <tr>
@@ -82,37 +137,52 @@
             <td><button id="encrypt" onclick="multiply()">Multiply ↓</button></td>
         </tr>
 
+
         <tr>
-            <td>m1 * m2 (mod p):</td>
-            <td><span id="m1m2"></span></td>
+            <td>r for N1:</td>
+            <td>r for N2:</td>
+            <td>r for N3:</td>
+            <td>r for N4:</td>
+            <td>r for N5:</td>
         </tr>
 
         <tr>
-            <td>c1 * c2 (mod p):</td>
-            <td><span id="c1c2"></span><input id="c1c21value" type="hidden" value=""><input id="c1c22value"
-                    type="hidden" value=""></td>
-        </tr>
-
-
-        <tr>
-            <td id="empty"></td>
-            <td><button id="decrypt" onclick="decrypt()">Decrypt ↓</button></td>
+            <td><input id="rn1" readonly></td>
+            <td><input id="rn2" readonly></td>
+            <td><input id="rn3" readonly></td>
+            <td><input id="rn4" readonly></td>
+            <td><input id="rn5" readonly></td>
         </tr>
 
         <tr>
-            <td>D(C1):</td>
-            <td><span id="d1"></span></td>
+            <td>Encrypted N1:</td>
+            <td>Encrypted N2:</td>
+            <td>Encrypted N3:</td>
+            <td>Encrypted N4:</td>
+            <td>Encrypted N5:</td>
         </tr>
 
         <tr>
-            <td>D(C2):</td>
-            <td><span id="d2"></span></td>
+            <td><input id="en1" readonly></td>
+            <td><input id="en2" readonly></td>
+            <td><input id="en3" readonly></td>
+            <td><input id="en4" readonly></td>
+            <td><input id="en5" readonly></td>
         </tr>
 
+        <tr>
+            <td colspan="2">Product of Encrypted Numbers</td>
+            <td><input id="pen" readonly></td>
+        </tr>
 
         <tr>
-            <td>D(c1*c2):</td>
-            <td><span id="d12"></span></td>
+            <td colspan="2">Product of Plain Numbers</td>
+            <td><input id="ppn" readonly></td>
+        </tr>
+
+        <tr>
+            <td colspan="2">Decrypted Product of Encrypted Numbers</td>
+            <td><input id="dpen" readonly></td>
         </tr>
 
     </table>
@@ -120,227 +190,134 @@
 
     <script>
 
-        var pf = [];
-
-
-        function pValid(num) {
-            let n = Number(num);
-            if (Number.isInteger(n) == false || n <= 1 || isPrime(num) == false) {
-                return false;
-            }
-
-            return true;
+        // generalized random function 
+        function random() {
+            let q = Number(document.getElementById("q").value);
+            return Math.floor((Math.random() * (q - 1))) + 1;
         }
 
-        function isPrime(test) {
-            for (var i = 2; i < test; i++) {
-                if (test % i === 0) {
-                    return false;
-                }
-            }
-            return true;
+        function randomx() {
+
+            document.getElementById("x").value = random();
         }
 
-
-        function validInput() {
-
-            let input = Number(document.getElementById("p").value);
-            if (pValid(input) == false) {
-                document.getElementById("validp").innerHTML = "*p has to be a positive prime number."
-            } else {
-                document.getElementById("validp").innerHTML = "";
-            }
-            document.getElementById("x").max = input - 1;
+        function randomr() {
+            document.getElementById("r").value = random();
         }
-
-
-        // store prime factors of a number 
-        function primeFactors(n) {
-            let temp = [];
-            pf = [];
-
-            // Print the number of 2s that divide n 
-            while (n % 2 == 0) {
-                temp.push(2);
-                n = n / 2;
-            }
-
-            // n must be odd at this point. So we can skip 
-            // one element (Note i = i +2) 
-            for (let i = 3; i <= Math.sqrt(n); i = i + 2) {
-                // While i divides n, print i and divide n 
-                while (n % i == 0) {
-                    temp.push(i);
-                    n = n / i;
-                }
-            }
-
-            // when n is a prime number greater than 2 
-            if (n > 2) {
-                temp.push(n);
-            }
-            pf = new Set(temp);
-
-        }
-
-
-        // find the largest primitive root for p
-        function generateg() {
-
-            let p = Number(document.getElementById("p").value);
-
-            if (isPrime(p) == false) {
-                document.getElementById("g").innerHTML = "invalid p";
-                return;
-            }
-
-            // Find value of Euler Totient function of n 
-            // Since n is a prime number, the value of Euler 
-            // Totient function is n-1 as there are n-1 
-            // relatively prime numbers. 
-            let phi = p - 1;
-            primeFactors(phi);
-
-            let a;
-
-            for (let r = phi; r > 2; r--) {
-                let flag = false;
-
-                for (a of pf) {
-
-                    // Check if r^((phi)/primefactors) mod p is 1
-                    if (fastModExp(r, (phi / a), p) == 1) {
-                        flag = true;
-                        break;
-                    }
-                }
-
-                // If there was no power with value 1. 
-                if (flag == false) {
-
-                    document.getElementById("gvalue").value = r;
-                    document.getElementById("g").innerHTML = r;
-                }
-            }
-
-        }
-
-
-
-        function validx() {
-            let x = Number(document.getElementById("x").value);
-            let p = Number(document.getElementById("p").value);
-
-            if (Number(x) >= Number(p) || Number(x) <= 1) {
-                document.getElementById("validx").innerHTML = "* 1 < x < p."
-                return false;
-            } else {
-                document.getElementById("validx").innerHTML = "";
-                return true;
-            }
-        }
-
 
 
         function generatey() {
-            if (validx() == true) {
-                let x = Number(document.getElementById("x").value);
-                console.log(x)
-                let g = Number(document.getElementById("gvalue").value);
-                console.log(g)
-                let p = Number(document.getElementById("p").value);
-                console.log(p)
+            let x = Number(document.getElementById("x").value);
+            let g = Number(document.getElementById("g").value);
+            let p = Number(document.getElementById("p").value);
 
-                let y = fastModExp(g, x, p);
-                document.getElementById("y").innerHTML = y;
-                document.getElementById("yvalue").value = y;
+            let y = fastModExp(g, x, p);
+            document.getElementById("y").value = y;
 
-                console.log(y)
-                let publicKey = "(" + g + ", " + p + ", " + y + ")";
-                document.getElementById("publicKey").innerHTML = publicKey;
-                console.log(publicKey)
-            } else {
-                document.getElementById("publicKey").innerHTML = "invalid x";
-            }
+            let publicKey = "(" + g + ", " + p + ", " + y + ")";
+            document.getElementById("publicKey").innerHTML = publicKey;
         }
 
-
-
-        function encrypt() {
-            let c1m = Number(document.getElementById("c1m").value);
-            let c2m = Number(document.getElementById("c2m").value);
-            let c1r = Number(document.getElementById("c1r").value);
-            let c2r = Number(document.getElementById("c2r").value);
+        // encryption method for general usage
+        function en(m, r) {
             let p = Number(document.getElementById("p").value);
-            let g = Number(document.getElementById("gvalue").value);
-            let y = Number(document.getElementById("yvalue").value);
+            let g = Number(document.getElementById("g").value);
+            let y = Number(document.getElementById("y").value);
+            let c = [];
 
             // Encryption: random r, c=E(m,y)=(gr,myr) 
-            let c11 = fastModExp(g, c1r, p);
-            let c12 = (c1m * Number(fastModExp(y, c1r, p))) % p;
-            let c1 = "(" + c11 + ", " + c12 + ")";
+            c[0] = fastModExp(g, r, p);
+            c[1] = (m * Number(fastModExp(y, r, p))) % p;
 
-            let c21 = fastModExp(g, c2r, p);
-            let c22 = (c2m * Number(fastModExp(y, c2r, p))) % p;
-            let c2 = "(" + c21 + ", " + c22 + ")";
+            return c;
 
-            document.getElementById("c1").innerHTML = c1;
-            document.getElementById("c2").innerHTML = c2;
-            document.getElementById("c11value").value = c11;
-            document.getElementById("c12value").value = c12;
-            document.getElementById("c21value").value = c21;
-            document.getElementById("c22value").value = c22;
         }
 
-
-        function multiply() {
-            let c1m = Number(document.getElementById("c1m").value);
-            let c2m = Number(document.getElementById("c2m").value);
-            let c11 = Number(document.getElementById("c11value").value);
-            let c12 = Number(document.getElementById("c12value").value);
-            let c21 = Number(document.getElementById("c21value").value);
-            let c22 = Number(document.getElementById("c22value").value);
-            let p = Number(document.getElementById("p").value);
-
-            let m1m2 = (c1m * c2m) % p;
-            let c1c21 = (c11 * c21) % p;
-            let c1c22 = (c12 * c22) % p;
-            let c1c2 = "(" + c1c21 + ", " + c1c22 + ")";
-
-
-            document.getElementById("m1m2").innerHTML = m1m2;
-            document.getElementById("c1c2").innerHTML = c1c2;
-            document.getElementById("c1c21value").value = c1c21;
-            document.getElementById("c1c22value").value = c1c22;
-        }
-
-
-        function decrypt() {
-            let c11 = Number(document.getElementById("c11value").value);
-            let c12 = Number(document.getElementById("c12value").value);
-            let c21 = Number(document.getElementById("c21value").value);
-            let c22 = Number(document.getElementById("c22value").value);
-            let c1c21 = Number(document.getElementById("c1c21value").value);
-            let c1c22 = Number(document.getElementById("c1c22value").value);
+        // decryption method for general usage
+        function de(c) {
             let p = Number(document.getElementById("p").value);
 
             // -x mod p = p - 1 - x
             let minusX = p - 1 - Number(document.getElementById("x").value);
 
             // Decryption: c = (a,b), m = D(c,x) = b/a^x = (my^r/g^rx) = m
-            let c1axinverse = Number(fastModExp(c11, minusX, p));
-            let c2axinverse = Number(fastModExp(c21, minusX, p));
-            let c1c2axinverse = Number(fastModExp(c1c21, minusX, p));
-            let dc1 = (c1axinverse * c12) % p;
-            let dc2 = (c2axinverse * c22) % p;
-            let dc1c2 = (c1c2axinverse * c1c22) % p;
+            let axinverse = Number(fastModExp(c[0], minusX, p));
 
-            document.getElementById("d1").innerHTML = dc1;
-            document.getElementById("d2").innerHTML = dc2;
-            document.getElementById("d12").innerHTML = dc1c2;
+            return (c[1] * axinverse) % p;
+        }
+
+        // encryption method for encrypt button
+        function encrypt() {
+            let m = Number(document.getElementById("m").value);
+            let r = Number(document.getElementById("r").value);
+
+            let c = en(m, r);
+
+            document.getElementById("c").innerHTML = c;
+            document.getElementById("a").value = c[0];
+            document.getElementById("b").value = c[1];
+        }
+
+        // decryption method for decrypt button
+        function decrypt() {
+            let c = [];
+            c[0] = Number(document.getElementById("a").value);
+            c[1] = Number(document.getElementById("b").value);
+
+            let d = de(c);
+
+            document.getElementById("d").value = d;
         }
 
 
+        function multiply() {
+            let p = Number(document.getElementById("p").value);
+            let n1 = Number(document.getElementById("n1").value);
+            let n2 = Number(document.getElementById("n2").value);
+            let n3 = Number(document.getElementById("n3").value);
+            let n4 = Number(document.getElementById("n4").value);
+            let n5 = Number(document.getElementById("n5").value);
+
+            // generate random values for each n, and print on page
+            let rn1 = random();
+            let rn2 = random();
+            let rn3 = random();
+            let rn4 = random();
+            let rn5 = random();
+            document.getElementById("rn1").value = rn1;
+            document.getElementById("rn2").value = rn2;
+            document.getElementById("rn3").value = rn3;
+            document.getElementById("rn4").value = rn4;
+            document.getElementById("rn5").value = rn5;
+
+            // encryption and print
+            let en1 = en(n1, rn1);
+            let en2 = en(n2, rn2);
+            let en3 = en(n3, rn3);
+            let en4 = en(n4, rn4);
+            let en5 = en(n5, rn5);
+
+            document.getElementById("en1").value = en1;
+            document.getElementById("en2").value = en2;
+            document.getElementById("en3").value = en3;
+            document.getElementById("en4").value = en4;
+            document.getElementById("en5").value = en5;
+
+            // multiply ciphertext
+            let pen = [];
+            pen[0] = (en1[0] * en2[0] * en3[0] * en4[0] * en5[0]) % p;
+            pen[1] = (en1[1] * en2[1] * en3[1] * en4[1] * en5[1]) % p;
+            document.getElementById("pen").value = pen;
+
+            // multiply plaintext
+            let ppn = (n1 * n2 * n3 * n4 * n5) % p;
+            document.getElementById("ppn").value = ppn;
+
+            // decrypt multiplied ciphertext
+            let dpen = de(pen);
+            document.getElementById("dpen").value = dpen;
+
+        }
 
         // for m^e % n
         function fastModExp(m, e, n) {

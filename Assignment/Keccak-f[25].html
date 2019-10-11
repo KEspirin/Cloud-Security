@@ -731,13 +731,16 @@
                     // arrange the column index to fit the order of a slice (3 4 0 1 2)
                     let x = (j + 3) % 5;
 
+                    // bx = ay, by = 2ax + 3ay
                     let by = (2 * x + 3 * y) % 5;
+                    let bx = y;
 
                     // convert back to js matix rule
-                    by = ((5 - by) + 2) % 5;
+                    let bi = ((5 - by) + 2) % 5;
+                    let bj = (bx + 2) % 5;
 
                     // apply the formula
-                    b[by][i] = a[i][j];
+                    b[bi][bj] = a[i][j];
                 }
             }
 
