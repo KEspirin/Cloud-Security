@@ -687,7 +687,7 @@
                 c[i] = a[0][i] ^ a[1][i] ^ a[2][i] ^ a[3][i] ^ a[4][i];
             }
             console.log("c" + c);
-            printArray(c, "thetac");
+            printArray(c, "thetac", 0);
 
 
             for (let j = 0; j < 5; j++) {
@@ -700,7 +700,7 @@
                 d[j] = c[(j + 4) % 5] ^ c[(j + 1) % 5];
             }
             console.log("d" + d);
-            printArray(d, "thetad");
+            printArray(d, "thetad", 0);
 
             for (let m = 0; m < 5; m++) {
                 for (n = 0; n < 5; n++) {
@@ -756,11 +756,13 @@
             console.log("before chi: a" + a);
             let compA = [];
             let shiftA = [];
+            let b = [];
 
             for (let i = 0; i < 5; i++) {
 
                 compA[i] = [];
                 shiftA[i] = [];
+                b[i] = [];
 
                 for (let j = 0; j < 5; j++) {
 
@@ -771,12 +773,14 @@
                     // Therefore +2 in the expression.
                     compA[i][j] = (~a[i][m]) + 2;
                     shiftA[i][j] = a[i][n];
-                    a[i][j] = a[i][j] ^ (compA[i][j] & shiftA[i][j]);
+                    b[i][j] = a[i][j] ^ (compA[i][j] & shiftA[i][j]);
                 }
+
+                printArray(compA[i], "chi~b", i);
+                printArray(shiftA[i], "chib1", i);
             }
 
-            printChi(compA, "chi~b");
-            printChi(shiftA, "chib1");
+            a = b;
             print("chi");
             console.log("after chi: a" + a);
 
@@ -820,17 +824,8 @@
             }
         }
 
-        function printChi(array, target) {
-
-            for (let i = 0; i < 5; i++) {
-                for (let j = 0; j < 5; j++) {
-                    document.getElementById(target + i + j).innerHTML = array[i][j];
-                }
-            }
-        }
-
-        function printArray(array, target) {
-            let i = "0";
+        function printArray(array, target, row) {
+            let i = row;
             for (let j = 0; j < 5; j++) {
                 document.getElementById(target + i + j).innerHTML = array[j];
             }
