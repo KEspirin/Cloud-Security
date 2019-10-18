@@ -629,7 +629,7 @@
                 theta();
                 pi();
                 chi();
-                iota(RC[round]);
+                iota(round);
             }
 
             // display result
@@ -641,13 +641,13 @@
             readInput();
             let r = (count % 12) + 1;
 
-            // there are 12 rounds required for Keccak-f[25].
+            // show rth round
             for (let round = 0; round < r; round++) {
                 console.log("round: " + round);
                 theta();
                 pi();
                 chi();
-                iota(RC[round]);
+                iota(round);
             }
             // display result
             print("a");
@@ -790,6 +790,7 @@
 
 
         function iota(round) {
+            // for display in the iota section
             let roundConstant = [
                 "0x0000000000000001",
                 "0x0000000000008082",
@@ -807,7 +808,7 @@
             print("iotaa");
             console.log("before iota: a[0][0]" + a[2][2])
             // a[0,0] (center of each slice) should be a[2][2] in js matrix
-            a[2][2] = a[2][2] ^ round;
+            a[2][2] = a[2][2] ^ RC[round];
             console.log("after iota: a[0][0]" + a[2][2])
             document.getElementById("roundConstant").value = roundConstant[round];
             print("iota");
