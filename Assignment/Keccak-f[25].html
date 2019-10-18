@@ -798,6 +798,7 @@
                 "0x8000000080008000",
                 "0x000000000000808B",
                 "0x0000000080000001",
+                "0x8000000080008081",
                 "0x8000000000008009",
                 "0x000000000000008A",
                 "0x0000000000000088",
@@ -809,7 +810,9 @@
             console.log("before iota: a[0][0]" + a[2][2])
             // a[0,0] (center of each slice) should be a[2][2] in js matrix
             a[2][2] = a[2][2] ^ RC[round];
+            console.log("rc:" + RC[round])
             console.log("after iota: a[0][0]" + a[2][2])
+            console.log("rc :" + roundConstant[round])
             document.getElementById("roundConstant").value = roundConstant[round];
             print("iota");
         }
